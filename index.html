@@ -3,10 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basit Input Box</title>
+    <title>Pi Sayısı Arama</title>
 </head>
 <body>
-    <label for="user-input">Bir şey yazın:</label>
+    <label for="user-input">Bir sayı girin:</label>
     <input type="text" id="user-input" name="user-input">
+    <button onclick="searchInPi()">Ara</button>
+    <p id="result"></p>
+
+    <script>
+        async function fetchPiData() {
+            const response = await fetch('pi-10million.txt');
+            const piData = await response.text();
+            return piData.replace(/\s+/g, ''); // Boşlukları kaldır
+        }
+
+        async function searchInPi() {
+            const userInput = document.getElementById('user-input').value;
+            const piData = await fetchPiData();
+            const index = piData.indexOf(userInput);
+
+            const resultElement = document.getElementById('result');
+            if (index !== -1) {
+                resultElement.textContent = `"${userInput}" ifadesi pi sayısının içinde ${index + 1}. sırada bulunuyor.`;
+            } else {
+                resultElement.textContent = `"${userInput}" ifadesi pi sayısının içinde bulunamadı.`;
+            }
+        }
+    </script>
 </body>
 </html>
